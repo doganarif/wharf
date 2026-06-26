@@ -1,0 +1,19 @@
+# server host key (generated on first run)
+.ssh/
+*_host_key
+*_host_key.pub
+
+# local client keys used for testing
+testkeys/
+
+# binaries
+/wharf
+/wharf-bin
+examples/server/server
+cmd/wharf/wharf
+cmd/create-wharf-app/create-wharf-app
+
+# local sqlite databases
+*.db
+*.db-shm
+*.db-wal

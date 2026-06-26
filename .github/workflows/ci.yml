@@ -1,0 +1,63 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: wharf
+          POSTGRES_PASSWORD: wharf
+          POSTGRES_DB: wharf
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: "1.26.x"
+          check-latest: true
+
+      - name: Core + serverless adapters (memory, sqlite, bbolt)
+        run: |
+          for m in . store/sqlite store/bbolt; do
+            echo "== $m =="
+            (cd "$m" && go build ./... && go vet ./... && go test ./...)
+          done
+
+      - name: Postgres adapter (live)
+        env:
+          WHARF_PG_TEST_DSN: postgres://wharf:wharf@localhost:5432/wharf?sslmode=disable
+        run: cd store/postgres && go build ./... && go vet ./... && go test ./...
+
+      - name: Redis adapter (live)
+        env:
+          WHARF_REDIS_TEST_ADDR: redis://localhost:6379
+        run: cd store/redis && go build ./... && go vet ./... && go test ./...
+
+      - name: Example server builds
+        run: cd examples/server && go build ./... && go vet ./...
+
+      - name: gofmt
+        run: test -z "$(gofmt -l . store/sqlite store/postgres store/redis store/bbolt examples/server)"
