@@ -149,24 +149,6 @@ wharf.New(":2222").
 
 `Run` returns on SIGINT/SIGTERM after a graceful `Shutdown`, so a caller's `defer store.Close()` actually fires. Notifiers (`notify/telegram`, `notify/webhook`) use only the standard library; apps can also ping on their own via `Session.Notify`. `Metrics` exposes `wharf_active_connections` and `wharf_room_members{room=…}`.
 
-## What works today
-
-Working and verified end-to-end over real SSH (real terminals, concurrent clients, live databases):
-
-- ✅ **Verified identity for free** — pubkey fingerprint → stable `ShortID` + colour, zero signup
-- ✅ **Multiplayer rooms** — one-line `Broadcast`, lock-free room actors, per-subscriber buffering
-- ✅ **Stateful rooms** — room-owned state + reducer, `Snapshot` on join, `StateChanged` on `Dispatch`
-- ✅ **Live presence** — accurate join/leave roster, cleaned up on disconnect
-- ✅ **Selectable lobby** — connect with no app name and pick one from a keyboard menu
-- ✅ **Persistence that survives restarts** — per-user state keyed by fingerprint and shared app state, across **SQLite, Postgres, Redis, and bbolt** (all pass one conformance suite; Postgres/Redis verified against live servers)
-- ✅ **Retention hooks** — Telegram / webhook notifiers, on connect or on demand
-- ✅ **Abuse & auth controls** — allowlist, per-key session cap + connect rate, idle timeout, identity mapping, SSH-CA trust
-- ✅ **Graceful shutdown** + **Prometheus metrics**
-- ✅ **Tooling** — `create-wharf-app` scaffolder, CI matrix (spins up Postgres + Redis)
-- ✅ **Demo apps** — `canvas` (drawing), `chat` (keyless room), `poll` (stateful tally)
-
-Pre-1.0: the API may still change before a tagged release.
-
 ## Layout
 
 This is a multi-module repo so the core stays dependency-free:
