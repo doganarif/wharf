@@ -149,6 +149,10 @@ wharf.New(":2222").
 
 `Run` returns on SIGINT/SIGTERM after a graceful `Shutdown`, so a caller's `defer store.Close()` actually fires. Notifiers (`notify/telegram`, `notify/webhook`) use only the standard library; apps can also ping on their own via `Session.Notify`. `Metrics` exposes `wharf_active_connections` and `wharf_room_members{room=…}`.
 
+## Built with wharf
+
+**[ask.arif.sh](https://arif.sh)** — an AI assistant you reach over SSH: `ssh ask.arif.sh`. Your public key is your account, so the conversation is right there when you reconnect, with per-key rate limits and a daily cap — all wharf primitives. The model lives in the app; wharf supplies identity, persistence, and the abuse controls. (See `examples/aichat` for the same shape with the Anthropic API.)
+
 ## Layout
 
 This is a multi-module repo so the core stays dependency-free:
@@ -183,3 +187,15 @@ Local builds resolve the unpublished modules via `replace` directives in each ad
 ## License
 
 MIT.
+
+<!-- arif-signature:start -->
+
+---
+
+Built by [Arif Dogan](https://arif.sh) - production AI and backend engineer.
+
+I help SaaS teams ship production AI features, fast backends, and reliable developer tools.
+
+[Work with me](https://arif.sh/work) | [Book a 30-min intro](https://calendar.superhuman.com/book/11SzDRA4zo8tuYoehO/A3kIl)
+
+<!-- arif-signature:end -->
