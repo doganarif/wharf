@@ -10,6 +10,7 @@ testkeys/
 /wharf
 /wharf-bin
 examples/server/server
+examples/aichat/aichat
 cmd/wharf/wharf
 cmd/create-wharf-app/create-wharf-app
 

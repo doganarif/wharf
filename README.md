@@ -174,6 +174,7 @@ wharf (module)
   store/redis/        (module) Redis adapter
   store/bbolt/        (module) bbolt adapter
   examples/server/    (module) runnable wiring every option via env vars
+  examples/aichat/    (module) streaming Claude chat over SSH (Anthropic SDK)
   .github/workflows/  CI matrix (Postgres + Redis services)
 ```
 

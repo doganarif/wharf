@@ -56,8 +56,11 @@ jobs:
           WHARF_REDIS_TEST_ADDR: redis://localhost:6379
         run: cd store/redis && go build ./... && go vet ./... && go test ./...
 
-      - name: Example server builds
-        run: cd examples/server && go build ./... && go vet ./...
+      - name: Examples build
+        run: |
+          for m in examples/server examples/aichat; do
+            (cd "$m" && go build ./... && go vet ./...)
+          done
 
       - name: gofmt
         run: test -z "$(gofmt -l . store/sqlite store/postgres store/redis store/bbolt examples/server)"
